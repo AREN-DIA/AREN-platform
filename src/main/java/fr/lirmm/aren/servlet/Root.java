@@ -150,7 +150,7 @@ public class Root implements Filter {
       noInstitution = em.createQuery("FROM Institution i "
           + "WHERE i.entId IS NULL", Institution.class)
           .getSingleResult();
-    } catch (EntityNotFoundException enfe) {
+    } catch (Throwable enfe) {
       newInstitution = true;
       noInstitution = new Institution();
     }
@@ -168,7 +168,7 @@ public class Root implements Filter {
         request.setAttribute("error", "Username already exists in DB but is not SUPERADMIN");
         return;
       }
-    } catch (EntityNotFoundException enfe) {
+    } catch (Throwable enfe) {
       newAdmin = true;
       superAdmin = new User();
       superAdmin.setFirstName("Super");
