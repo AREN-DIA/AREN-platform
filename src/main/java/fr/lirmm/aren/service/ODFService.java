@@ -77,6 +77,9 @@ public class ODFService {
         cleanOutDocument();
         setOfficeStyles();
 
+        if (debate.getDocument().getName() == null || debate.getDocument().getName() == "") {
+            debate.getDocument().setName(debate.getDocument().getCategory().getName());
+         }
         //Set main heading
         OdfTextHeading heading ;
         if (debate.getDocument().getName() == null || debate.getDocument().getName() == "") {
