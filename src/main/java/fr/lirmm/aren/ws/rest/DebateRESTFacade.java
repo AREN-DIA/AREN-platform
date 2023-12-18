@@ -508,10 +508,10 @@ public class DebateRESTFacade extends AbstractRESTFacade<Debate> {
         Debate debate = debateService.findByUser(id, getUser(), true, true, false, false, false);
         File export = odfService.parseDebate(debate);
         String fileName;
-        if (debate.getDocument().getName()==null) {
-            fileName = debate.getDocument().getCategory().getName().replaceAll("[^a-zA-Z0-9\\s]", "") + ".odt";
+        if (debate.getDocument().getName()==null || debate.getDocument().getName() == "") {
+            fileName = debate.getDocument().getCategory().getName().replaceAll("[^a-zA-Z0-9\\sçèéà']", "") + ".odt";
         } else {
-            fileName = debate.getDocument().getName().replaceAll("[^a-zA-Z0-9\\s]", "") + ".odt";    
+            fileName = debate.getDocument().getName().replaceAll("[^a-zA-Z0-9\\sçèéà']", "") + ".odt";    
         }
         
         return Response.ok(export)

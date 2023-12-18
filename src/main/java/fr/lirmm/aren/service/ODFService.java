@@ -79,7 +79,7 @@ public class ODFService {
 
         //Set main heading
         OdfTextHeading heading ;
-        if (debate.getDocument().getName() == null) {
+        if (debate.getDocument().getName() == null || debate.getDocument().getName() == "") {
             heading = new OdfTextHeading(contentDom, "Heading", "Dans : "+debate.getDocument().getCategory().getName());
         } else {
             
