@@ -75,7 +75,12 @@ public class Notification extends AbstractOwnedEntity implements Serializable {
     public static Notification COMMENT_MODERATED(Comment comment) {
         Notification n = new Notification(comment.getOwner(), comment.getDebate(), comment);
         n.content = new Message("comment_moderated");
-        n.content.addDetail("debateName", comment.getDebate().getDocument().getName());
+        if (comment.getDebate().getDocument().getName()==null) {
+            n.content.addDetail("debateName", comment.getDebate().getDocument().getCategory().getName());
+        } else {
+            n.content.addDetail("debateName", comment.getDebate().getDocument().getName());    
+        }
+        
         return n;
     }
 
@@ -88,7 +93,13 @@ public class Notification extends AbstractOwnedEntity implements Serializable {
     public static Notification COMMENT_SINGNALED(User modo, Comment comment) {
         Notification n = new Notification(modo, comment.getDebate(), comment);
         n.content = new Message("comment_signaled");
-        n.content.addDetail("debateName", comment.getDebate().getDocument().getName());
+         if (comment.getDebate().getDocument().getName()==null) {
+            n.content.addDetail("debateName", comment.getDebate().getDocument().getCategory().getName());
+        } else {
+            n.content.addDetail("debateName", comment.getDebate().getDocument().getName());    
+        }
+        
+        
         return n;
     }
 
@@ -115,7 +126,12 @@ public class Notification extends AbstractOwnedEntity implements Serializable {
     public static Notification INVITED_TO_DEBATE(User owner, Debate debate) {
         Notification n = new Notification(owner, debate, null);
         n.content = new Message("invited_to_debate");
-        n.content.addDetail("debateName", debate.getDocument().getName());
+        if (debate.getDocument().getName()==null) {
+            n.content.addDetail("debateName", debate.getDocument().getCategory().getName());
+        } else {
+            n.content.addDetail("debateName", debate.getDocument().getName());    
+        }
+        
         return n;
     }
 
@@ -129,7 +145,11 @@ public class Notification extends AbstractOwnedEntity implements Serializable {
     public static Notification TEAM_ADDED_TO_DEBATE(User owner, Debate debate, Team team) {
         Notification n = new Notification(owner, debate, null);
         n.content = new Message("team_added_to_debate");
-        n.content.addDetail("debateName", debate.getDocument().getName());
+        if (debate.getDocument().getName()==null) {
+            n.content.addDetail("debateName", debate.getDocument().getCategory().getName());
+        } else {
+            n.content.addDetail("debateName", debate.getDocument().getName());    
+        }
         n.content.addDetail("teamName", team.getName());
         return n;
     }

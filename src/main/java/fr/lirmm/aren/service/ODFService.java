@@ -78,7 +78,14 @@ public class ODFService {
         setOfficeStyles();
 
         //Set main heading
-        OdfTextHeading heading = new OdfTextHeading(contentDom, "Heading", debate.getDocument().getName());
+        OdfTextHeading heading ;
+        if (debate.getDocument().getName() == null) {
+            heading = new OdfTextHeading(contentDom, "Heading", "Dans : "+debate.getDocument().getCategory().getName());
+        } else {
+            
+            heading = new OdfTextHeading(contentDom, "Heading", debate.getDocument().getName());
+        }
+        
         OdfTextSpan span = new OdfTextSpan(contentDom, "Text_20_indice", "");
         span.appendChild(new OdfTextSpan(contentDom, "Text_20_grey", " par "));
         span.addContent(debate.getDocument().getAuthor());
