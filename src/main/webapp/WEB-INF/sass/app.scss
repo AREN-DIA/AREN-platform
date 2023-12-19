@@ -1006,6 +1006,30 @@ nav {
         }
     }
 }
+.sMYTEST {
+    background-color: #f0f0f0; 
+    border-left: 3px solid #b9aea5; 
+    padding-left: 10px; 
+    padding-bottom: 10px;
+    transition: background-color 0.3s ease; 
+  }
+
+  .selected-collapsible {
+    background-color: #f0f0f0; 
+    border-left: 3px solid #ffcc00; 
+    padding-left: 10px; 
+    padding-bottom: 10px; 
+    transition: background-color 0.3s ease; 
+  }
+  
+  .selection-tag-wrapper {
+    display: flex; 
+    align-items: center; 
+  }
+  
+  .selection-tag-wrapper i {
+    margin-right: 5px; 
+  }
 
 .selection {
     overflow: hidden;

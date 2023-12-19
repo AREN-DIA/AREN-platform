@@ -31,6 +31,15 @@ public class TagSet extends HashSet<TagSet.Tag> {
         }
     }
 
+    public TagSet(String ref, String serial) {
+        /* 51 */     this();
+        /* 52 */     for (String tagSerial : serial.split("\\*")) {
+        /* 53 */       if (tagSerial.length() > 0) {
+        /* 54 */         add(new Tag(ref + tagSerial));
+        /*    */       }
+        /*    */     } 
+        /*    */   }
+
     /**
      *
      * @param tag

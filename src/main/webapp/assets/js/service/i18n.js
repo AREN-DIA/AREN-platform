@@ -113,6 +113,8 @@ const messages = {
     select_all: "Selectionner tout",
     unselect_all: "Déselectionner tout",
     advanced_options: "Options avancées",
+    show_email: "Renseigner l'e-mail de l'utilisateur⋅rice",
+    hide_email: "Ne pas renseigner",
     modo_request: "Demande d'autorisation pour créer des débats",
     public_debate: "Débat public",
     reformulation_check: "Assistant de reformulation",
