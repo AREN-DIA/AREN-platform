@@ -226,7 +226,7 @@ public class ODFService {
         org.w3c.dom.Node childNode = officeText.getFirstChild();
         while (childNode != null) {
             childNode = officeText.getFirstChild(); 
-            if (childNode.getParentNode().isSameNode(officeText)) {
+            if (childNode != null && childNode.getParentNode().isSameNode(officeText)) {
                 officeText.removeChild(childNode);
             } 
             
