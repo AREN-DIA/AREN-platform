@@ -82,13 +82,7 @@ public class ODFService {
          }
         //Set main heading
         OdfTextHeading heading ;
-        if (debate.getDocument().getName() == null || debate.getDocument().getName() == "") {
-            heading = new OdfTextHeading(contentDom, "Heading", "Dans : "+debate.getDocument().getCategory().getName());
-        } else {
-            
-            heading = new OdfTextHeading(contentDom, "Heading", debate.getDocument().getName());
-        }
-        
+        heading = new OdfTextHeading(contentDom, "Heading", debate.getDocument().getName());
         OdfTextSpan span = new OdfTextSpan(contentDom, "Text_20_indice", "");
         span.appendChild(new OdfTextSpan(contentDom, "Text_20_grey", " par "));
         span.addContent(debate.getDocument().getAuthor());
@@ -231,10 +225,11 @@ public class ODFService {
     private void cleanOutDocument() {
         org.w3c.dom.Node childNode = officeText.getFirstChild();
         while (childNode != null) {
+            childNode = officeText.getFirstChild(); 
             if (childNode.getParentNode().isSameNode(officeText)) {
                 officeText.removeChild(childNode);
             } 
-            childNode = officeText.getFirstChild(); 
+            
         }
     }
 
