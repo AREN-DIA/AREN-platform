@@ -225,11 +225,14 @@ public class ODFService {
     private void cleanOutDocument() {
         org.w3c.dom.Node childNode = officeText.getFirstChild();
         while (childNode != null) {
-            childNode = officeText.getFirstChild(); 
             if (childNode != null && childNode.getParentNode().isSameNode(officeText)) {
-                officeText.removeChild(childNode);
+                try {
+                    officeText.removeChild(childNode);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                } 
             } 
-            
+            childNode = officeText.getFirstChild();   
         }
     }
 
