@@ -168,6 +168,7 @@ public class HttpRequestService {
             params.add(new BasicNameValuePair("extract_submit", "Extraire"));
             params.add(new BasicNameValuePair("number", "20"));
             params.add(new BasicNameValuePair("task", "task"));
+            params.add(new BasicNameValuePair("from", "aren"));
             httppost.setEntity(new UrlEncodedFormEntity(params, "iso-8859-1"));
 
             CloseableHttpResponse response = httpClient.execute(httppost);
@@ -211,6 +212,7 @@ public class HttpRequestService {
             params.add(new BasicNameValuePair("extract_term_list", text));
             params.add(new BasicNameValuePair("extract_termid_list", ""));
             params.add(new BasicNameValuePair("task", ""));
+            params.add(new BasicNameValuePair("from", "aren"));
             httppost.setEntity(new UrlEncodedFormEntity(params, "iso-8859-1"));
 
             CloseableHttpResponse response = httpClient.execute(httppost);
