@@ -93,7 +93,7 @@
                 return this.user.password === this.passwordCheck;
             },
             validEmail() {
-                return ($root.user.authority != 'GUEST' && !emailToggle) ? true : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email);
+                return (this.$root.user.authority != 'GUEST' && !this.emailToggle) ? true : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email);
             }
         },
         methods: {
