@@ -186,15 +186,7 @@
         },
         methods: {
             toggleCollapsible(collapsible) {
-                if (collapsible === this.selectedCollapsible && !event.target.open) {
-                // Le collapsible actuel est celui qui était sélectionné et est maintenant fermé
-                if (this.lastOpenedCollapsible !== null && this.selectedCollapsible !== this.lastOpenedCollapsible) {
-                    this.selectedCollapsible = this.lastOpenedCollapsible; // Définir le dernier collapsible sélectionné comme le nouveau sélectionné
-                } 
-                else {
-                    this.selectedCollapsible = null; // Aucun collapsible sélectionné
-                }
-                } else if (collapsible !== this.selectedCollapsible){
+                if (collapsible !== this.selectedCollapsible){
                 // Le collapsible actuel est sélectionné et ouvert
                 this.selectedCollapsible = collapsible; // Définir le collapsible actuel comme le sélectionné
                 this.lastOpenedCollapsible = collapsible; // Mettre à jour le dernier collapsible ouvert
