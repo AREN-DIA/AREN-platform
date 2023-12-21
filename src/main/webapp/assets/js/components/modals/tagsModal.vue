@@ -21,7 +21,7 @@
                 <div v-html="comment.argumentation" ref="argumentation"></div>
             </div>
         </div> -->
-        <details :class="{ 'selected-collapsible': isCollapsibleSelected('sel::') }" @click="toggleCollapsible('sel::')">
+        <details :class="{ 'selected-collapsible': isCollapsibleSelected('sel'), 'open': collapsibles.sel.isOpen }" @click="toggleCollapsible('sel')">
         <summary><i class="material-icons small-icon">text_snippet</i> Selection </summary>
         <div class="selection">
             <div class="selection-tag-wrapper">
@@ -41,15 +41,16 @@
             {{ getFormattedValue(tag) }}
             <i class="close material-icons" @click.stop="comment.proposedTags.remove(tag)">close</i>
         </div>
-        <text-input v-if="isCollapsibleSelected('sel::')"
+        </details>
+        <text-input v-if="isCollapsibleSelected('sel')"
             v-bind:helper="$t('helper.tag_input_explanations')"
             v-bind:label="$t('proposed_tags')"
             v-model="tagInput"
             @keyup.enter="addTag()">
         </text-input>
-        </details>
+        
         <hr class="custom-hr">
-        <details :class="{ 'selected-collapsible': isCollapsibleSelected('refo::') }" @click="toggleCollapsible('refo::')">
+        <details :class="{ 'selected-collapsible': isCollapsibleSelected('refo'), 'open': collapsibles.refo.isOpen }" @click="toggleCollapsible('refo')">
         <summary><i class="material-icons small-icon">hearing</i> {{ $t('comment.reformulation') }}</summary>
         <div class="selection">
             <div class="selection-tag-wrapper">
@@ -69,15 +70,16 @@
             {{ getFormattedValue(tag) }}
             <i class="close material-icons" @click.stop="comment.proposedTags.remove(tag)">close</i>
         </div>
-        <text-input v-if="isCollapsibleSelected('refo::')"
+        </details>
+        <text-input v-if="isCollapsibleSelected('refo')"
             v-bind:helper="$t('helper.tag_input_explanations')"
             v-bind:label="$t('proposed_tags')"
             v-model="tagInput"
             @keyup.enter="addTag()">
         </text-input>
-        </details>
+        
         <hr class="custom-hr">
-        <details :class="{ 'selected-collapsible': isCollapsibleSelected('arg::') }" @click="toggleCollapsible('arg::')">
+        <details :class="{ 'selected-collapsible': isCollapsibleSelected('arg'), 'open': collapsibles.arg.isOpen }" @click="toggleCollapsible('arg')">
         <summary><i class="material-icons small-icon">chat_bubble_outline</i> {{ $t('comment.argumentation') }}</summary>
         <div class="selection">
             <div class="selection-tag-wrapper">
@@ -99,14 +101,15 @@
              class="chip valid">
             {{ getFormattedValue(tag) }}
             <i class="close material-icons" @click.stop="comment.proposedTags.remove(tag)">close</i>
-        </div>  
-        <text-input v-if="isCollapsibleSelected('arg::')"
+        </div> 
+        </details> 
+        <text-input v-if="isCollapsibleSelected('arg')"
             v-bind:helper="$t('helper.tag_input_explanations')"
             v-bind:label="$t('proposed_tags')"
             v-model="tagInput"
             @keyup.enter="addTag()">
         </text-input> 
-        </details>
+        
         
 
 
@@ -134,6 +137,12 @@
                 comment: false,
                 selectedCollapsible: null,
                 lastOpenedCollapsible: null, 
+                openCollapsibles: [],
+                collapsibles: {
+                    sel : { isOpen: false },
+                    refo : { isOpen: false },
+                    arg : { isOpen: false },
+                },
             }
         },
         computed: {
@@ -185,7 +194,30 @@
             },
         },
         methods: {
-            toggleCollapsible(collapsible) {
+            toggleCollapsible(collapsibleKey) {
+                Object.keys(this.collapsibles).forEach((key) => {
+                    if (key !== collapsibleKey) {
+                        this.$set(this.collapsibles, key, { isOpen: false });
+                    }
+                });
+
+            // Mettre à jour l'état d'ouverture du collapsible actuel
+            this.$set(this.collapsibles, collapsibleKey, { isOpen: !this.collapsibles[collapsibleKey].isOpen });
+           
+            const index = this.openCollapsibles.indexOf(collapsibleKey);
+            if (index === -1) {
+                //this.lastOpenedCollapsible = this.selectedCollapsible;
+                this.selectedCollapsible = collapsibleKey;
+                this.openCollapsibles.push(collapsibleKey);
+            } else {
+                this.openCollapsibles.splice(collapsibleKey);
+                const myOpen = this.openCollapsibles.pop();
+                this.selectedCollapsible = myOpen;
+                this.openCollapsibles.push(myOpen);
+            }
+            
+        },
+            toggleCollapsibles(collapsible) {
                 if (collapsible !== this.selectedCollapsible){
                 // Le collapsible actuel est sélectionné et ouvert
                 this.selectedCollapsible = collapsible; // Définir le collapsible actuel comme le sélectionné
@@ -212,7 +244,7 @@
                 if (tag.value.length > 0) {
                     let lc = tag.value.toLowerCase();
                     let index = this.comment.proposedTags.findIndex((t) => t.value.toLowerCase() === lc);
-                    let prefix = this.selectedCollapsible;
+                    let prefix = this.selectedCollapsible +"::";
                     tag.value = prefix + tag.value; // Ajouter le préfixe au tag
 
                     if (index !== -1) {
