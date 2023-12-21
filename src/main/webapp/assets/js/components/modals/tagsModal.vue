@@ -85,7 +85,7 @@
                 <div v-html="comment.argumentation" ref="argumentation"></div>
             </div>
         </div>
-        </details>
+        
         <hr>
         <div class="tile-container">
                 <div v-for="(tag, index) in sortedArgumentTags"
@@ -106,7 +106,7 @@
             v-model="tagInput"
             @keyup.enter="addTag()">
         </text-input> 
-        
+        </details>
         
 
 
