@@ -4,31 +4,34 @@
             <img class="col" src="assets/img/imageleves.png">
                 <p class="col" v-html="$t('helper.welcome')"></p>
         </div>
-
+        
         <div class="container">
+            <div style="display: flex; align-items: center;">
+                <h1>Catégories</h1>
+                <div class="toolbar" style="margin-left: auto; display: flex; align-items: center;">
+                    <div style="margin-left: 10px;">
+                        <input type="text" v-model="searchQuery" placeholder="Filtrer par nom de catégorie" style="padding: 5px;">
+                    </div>
+                    <div style="margin-right: 10px; display: flex; align-items: center;">
+                        <button :style="{ 'color': sortBy === 'lastCommentDate' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortBy('lastCommentDate')">
+                            <i class="material-icons" style="font-size: 18px;">history</i>
+                        </button>
+                        <button :style="{ 'color': sortBy === 'debatesCount' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortBy('debatesCount')">
+                            <i class="material-icons" style="font-size: 18px;">filter_9_plus</i>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <button :style="{ 'color': sortOrder === 'asc' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortOrder('asc')">
+                            <i class="material-icons" style="font-size: 18px;">arrow_upward</i>
+                        </button>
+                        <button :style="{ 'color': sortOrder === 'desc' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortOrder('desc')">
+                            <i class="material-icons" style="font-size: 18px;">arrow_downward</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-            <h1>Catégories</h1>
-            <div class="toolbar">
-                <div>
-                    <button @click="setSortBy('lastCommentDate')">
-                    <i class="material-icons">date_range</i>
-                    </button>
-                    <button @click="setSortBy('debatesCount')">
-                    <i class="material-icons">forum</i>
-                    </button>
-                </div>
-                <div>
-                    <button @click="setSortOrder('asc')">
-                    <i class="material-icons">arrow_upward</i>
-                    </button>
-                    <button @click="setSortOrder('desc')">
-                    <i class="material-icons">arrow_downward</i>
-                    </button>
-                </div>
-            </div>
-            <div>
-                <input type="text" v-model="searchQuery" placeholder="Rechercher par nom de catégorie">
-            </div>
+
 
             <div class="row center-align" id="categoriesList">
                 <div v-for="category in filtredCategories" v-bind:key="category.id" class="col">
@@ -55,16 +58,14 @@
         data( ) {
             return {
                 categories: [],
-                filtredCategories: [],
                 sortBy: 'lastCommentDate', // Par défaut, tri par date de modification
                 sortOrder: 'desc', // Par défaut, tri décroissant
-                searchQuery: '' // Terme de recherche 
+                searchQuery: '', // Terme de recherche 
+                filtredCategories: []
             };
         },
         created( ) {
             this.fetchData( );
-            this.sortCategories();
-            this.filtredCategories = this.categories;
         },
         methods: {
             sortByDate(order) {
@@ -97,6 +98,7 @@
                     return bValue - aValue;
                 }
                 });
+                this.filtredCategories = this.categories;
                 // Filtrer en fonction du terme de recherche
                 if (this.searchQuery === '') {
                     this.filtredCategories = this.categories;
@@ -111,9 +113,13 @@
             fetchData( ) {
                 ArenService.Categories.getAll({
                     query: {overview: true},
-                    onSuccess: (categories) => this.categories = categories, 
+                    onSuccess: (categories) => { 
+                        this.categories = categories; 
+                        this.sortCategories();
+                    },
                 });
-                this.sortCategories();    
+                
+                    
             }
         },
         watch: {
