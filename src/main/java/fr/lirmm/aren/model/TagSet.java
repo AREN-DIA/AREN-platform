@@ -119,6 +119,8 @@ public class TagSet extends HashSet<TagSet.Tag> {
             String[] split = serial.split("\\|");
             if (split.length == 2) {
                 split[1] = split[1].trim();
+                System.out.println("DEBUG RETOUR IDEFIX --------> : "+serial);
+                System.out.println("DEBUG RETOUR IDEFIX POWER --------> : "+split[1]);
                 this.power = Float.parseFloat(split[1]);
             }
             split[0] = split[0].trim();
