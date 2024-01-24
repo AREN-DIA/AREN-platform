@@ -186,6 +186,10 @@ public class CommentService extends AbstractService<Comment> {
         Iterator<Comment> it = comments.iterator();
         while (it.hasNext()) {
             Comment comment = it.next();
+            System.out.println("*** : DEBUG DEBATE -->"+comment.getDebate());
+            System.out.println("*** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
+            System.out.println("*** : DEBUG TAGs -->"+comment.getProposedTags());
+            System.out.println();
             this.updateTags(comment, true);
             System.out.print("+");
             if (callback != null) {
