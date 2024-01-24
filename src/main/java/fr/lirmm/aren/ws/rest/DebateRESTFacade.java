@@ -1,6 +1,7 @@
 package fr.lirmm.aren.ws.rest;
 
 import java.io.File;
+import java.net.FileNameMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -509,9 +510,13 @@ public class DebateRESTFacade extends AbstractRESTFacade<Debate> {
         File export = odfService.parseDebate(debate);
         String fileName;
         if (debate.getDocument().getName()==null || debate.getDocument().getName() == "") {
-            fileName = debate.getDocument().getCategory().getName().replaceAll("[^a-zA-Z0-9\\sçèéà'()-–]", "") + ".odt";
+            fileName = debate.getDocument().getCategory().getName().replaceAll("[^a-zA-Z0-9\\sçèéà'()-]", "") + ".odt";
+            fileName = fileName.replace("’", "'");
+            fileName = fileName.replace("–", "-");
         } else {
-            fileName = debate.getDocument().getName().replaceAll("[^a-zA-Z0-9\\sçèéà'()-–]", "") + ".odt";    
+            fileName = debate.getDocument().getName().replaceAll("[^a-zA-Z0-9\\sçèéà'()-]", "") + ".odt";
+            fileName = fileName.replace("’", "'");
+            fileName = fileName.replace("–", "-");    
         }
         
         return Response.ok(export)
