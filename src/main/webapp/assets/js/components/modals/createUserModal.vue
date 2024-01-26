@@ -114,6 +114,7 @@
                     this.user = new User( );
                     this.user.authority = Authority.USER;
                     this.passwordCheck = "";
+                    this.user.email = 'aren@aren.fr';
                 });
             },
             testUserExistance(field) {
