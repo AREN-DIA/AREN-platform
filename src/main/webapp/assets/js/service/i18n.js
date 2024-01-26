@@ -51,7 +51,7 @@ const messages = {
     team_edition: "Édition de groupe",
     team_creation: "Création de groupe",
     image: "Image",
-    user_creation: "Création d'un⋅e untilisateur⋅rice",
+    user_creation: "Création d'un⋅e utilisateur⋅rice",
     username: "Pseudonyme",
     email: "E-mail",
     first_name: "Prénom",
