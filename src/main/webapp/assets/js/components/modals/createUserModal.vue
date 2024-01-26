@@ -26,7 +26,8 @@
                         v-bind:validate="($root.user.authority != 'GUEST' && !emailToggle) ? validEmail : (validEmail && !exists['email'])"
                         v-bind:error-helper="!validEmail ? $t('helper.not_an_email') : $t('helper.email_exists')"
                         v-bind:required="emailToggle"
-                        :disabled="$root.user.authority != 'GUEST' && !emailToggle">
+                        :disabled="$root.user.authority != 'GUEST' && !emailToggle"
+                        @input="testUserExistance('email')">
             </text-input>
             <text-input type="text" class="col s6"
                         v-model="user.firstName"
@@ -68,7 +69,7 @@
 
         <template v-slot:footer>
             <button @click="close()" v-bind:disabled="loading" class="waves-effect waves-green btn-flat">{{ $t('cancel') }}</button>
-            <button @click="signup();" v-bind:disabled="loading || !samePasswords || exists.username || emailToggle && (exists.email || !validEmail)" class="waves-effect waves-green btn-flat">{{ $t('validate') }}</button>
+            <button @click="signup();" v-bind:disabled="loading || !samePasswords || exists.username || (emailToggle || $root.user.authority == 'GUEST') && (exists.email || !validEmail) " class="waves-effect waves-green btn-flat">{{ $t('validate') }}</button>
         </template>
 
     </modal-layout>
@@ -99,7 +100,10 @@
         methods: {
             toggleEmail() {
                 this.emailToggle = !this.emailToggle;
-                if (!this.emailToggle) {
+                if (this.$root.user.authority != 'GUEST' && !this.emailToggle) {
+                    this.user.email = 'aren@aren.fr';
+                }
+                if (this.$root.user.authority != 'GUEST' && this.emailToggle) {
                     this.user.email = '';
                 }
             },
