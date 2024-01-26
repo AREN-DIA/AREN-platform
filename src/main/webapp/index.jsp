@@ -198,6 +198,7 @@
 
     <login-modal ref="loginModal" @forgot-password="forgotPassword"></login-modal>
     <create-user-modal ref="createUserModal"></create-user-modal>
+    <create-batch-users-modal ref="createBatchUsersModal"></create-batch-users-modal>
     <reset-password-modal ref="resetPasswdModal"></reset-password-modal>
 
     <password-modal ref="passwdModal"></password-modal>
@@ -328,6 +329,7 @@
           "notifications-panel": vueLoader('components/widgets/notificationsPanel'),
           "login-modal": vueLoader('components/modals/loginModal'),
           "create-user-modal": vueLoader('components/modals/createUserModal'),
+          "create-batch-users-modal": vueLoader('components/modals/createBatchUsersModal'),
           "password-modal": vueLoader('components/modals/passwordModal'),
           "reset-password-modal": vueLoader('components/modals/resetPasswordModal'),
           "configuration-modal": vueLoader('components/modals/configurationModal'),

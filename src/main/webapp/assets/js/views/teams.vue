@@ -17,6 +17,12 @@
                 @press="manageUsers ? createUser() : createOrUpdateTeam()"
                 v-bind:label="manageUsers ? $t('new_user') : $t('new_team')">
             </action-button>
+            <action-button v-if="manageUsers"
+                v-bind:tooltip-disabled="manageUsers ? $t('helper.cannot_create_institution_user') : $t('helper.cannot_create_institution_team')"
+                v-bind:disabled="institution.id !== 0"
+                @press="createBatchUsers()"
+                v-bind:label="'Créer classe'">
+            </action-button>
         </template>
 
         <div class="center">
@@ -71,10 +77,12 @@
                 </action-button>
             </template>
         </teams-grid>
-
+        
         <template v-slot:addons>
             <team-modal ref="teamModal">
             </team-modal>
+            <create-batch-users-modal ref="createBatchUsersModal">
+            </create-batch-users-modal>
         </template>
     </base-layout>
 </template>
@@ -152,6 +160,20 @@
                     }
                 });
             },
+            createBatchUsers( ) {
+                this.$root.$refs.createBatchUsersModal.open((newUsers) => {
+                    if (newUsers) {
+                        ArenService.Users.create({
+                            data: newUsers,
+                            onSuccess: (returnedUsers) => {
+                                this.$nextTick(function ( ) {
+                                    this.$refs.userGrid.selectRow('row' + returnedUsers.id);
+                                });
+                            }
+                        });
+                    }
+                });
+            },
             deleteUser(user, permanent = false) {
                 this.$confirm({
                     title: this.$t(permanent ? "helper.delete_permanent_user" : "helper.delete_user", {userName: user.fullName()}),
@@ -177,8 +199,10 @@
         },
         components: {
             'team-modal': vueLoader('components/modals/teamModal'),
+            'create-batch-users-modal': vueLoader('components/modals/createBatchUsersModal'),
             'teams-grid': vueLoader('components/grids/teamsGrid'),
-            'users-grid': vueLoader('components/grids/usersGrid')
+            'users-grid': vueLoader('components/grids/usersGrid'),
+            
         }
     };
 </script>
