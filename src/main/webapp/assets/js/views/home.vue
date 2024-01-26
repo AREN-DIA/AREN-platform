@@ -6,31 +6,35 @@
         </div>
         
         <div class="container">
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; align-items: center;justify-content: space-between;">
                 <h1>Catégories</h1>
-                <div class="toolbar" style="margin-left: auto; display: flex; align-items: center;">
-                    <div style="margin-left: 10px;">
-                        <input type="text" v-model="searchQuery" placeholder="Filtrer par nom de catégorie" style="padding: 5px;">
-                    </div>
-                    <div style="margin-right: 10px; display: flex; align-items: center;">
-                        <button :style="{ 'color': sortBy === 'lastCommentDate' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortBy('lastCommentDate')">
+                <div class="toolbar" style="display: flex; align-items: center;">
+                        <span :style="{ 'color': '#A1a5a6' }">Filtres : </span>
+                        <div style="display: flex; align-items: center; margin-left: 10px; margin-right: 10px;">
+                        <button :style="{ 'color': sortBy === 'lastCommentDate' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortBy('lastCommentDate')" title="Trier par date du dernier commentaire">
                             <i class="material-icons" style="font-size: 18px;">history</i>
                         </button>
-                        <button :style="{ 'color': sortBy === 'debatesCount' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortBy('debatesCount')">
+                        <button :style="{ 'color': sortBy === 'debatesCount' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortBy('debatesCount')" title="Trier par nombre de débats">
                             <i class="material-icons" style="font-size: 18px;">filter_9_plus</i>
                         </button>
-                    </div>
-                    <div style="display: flex; align-items: center;">
-                        <button :style="{ 'color': sortOrder === 'asc' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortOrder('asc')">
+                        </div>
+
+                        <span :style="{ 'color': '#A1a5a6' }">Ordre : </span>
+                        <div style="display: flex; align-items: center;">
+                        <button :style="{ 'color': sortOrder === 'asc' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortOrder('asc')" title="Ordre croissant">
                             <i class="material-icons" style="font-size: 18px;">arrow_upward</i>
                         </button>
-                        <button :style="{ 'color': sortOrder === 'desc' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortOrder('desc')">
+                        <button :style="{ 'color': sortOrder === 'desc' ? '#333' : '#A1a5a6', 'border-radius': '5px', 'padding': '0', 'cursor': 'pointer', 'border': 'none' }" @click="setSortOrder('desc')" title="Ordre décroissant">
                             <i class="material-icons" style="font-size: 18px;">arrow_downward</i>
                         </button>
+                        </div>
                     </div>
-                </div>
             </div>
-
+            <div style="display: flex; align-items: center; justify-content: center;">
+                    <div class="toolbar" style="display: flex; align-items: center;justify-content: center;">
+                        <input type="text" v-model="searchQuery" placeholder="Recherche par catégorie" >
+                    </div>
+            </div>
 
 
             <div class="row center-align" id="categoriesList">
