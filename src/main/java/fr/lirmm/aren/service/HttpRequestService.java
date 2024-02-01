@@ -307,14 +307,18 @@ public class HttpRequestService {
             params.add(new BasicNameValuePair("extract_termid_list", ""));
             params.add(new BasicNameValuePair("task", ""));
             params.add(new BasicNameValuePair("from", "aren"));
-            httppost.setEntity(new UrlEncodedFormEntity(params, "iso-8859-1"));
+            UrlEncodedFormEntity url = new UrlEncodedFormEntity(params, "iso-8859-1");
+            httppost.setEntity(url);
 
             CloseableHttpResponse response = httpClient.execute(httppost);
             String responseString = EntityUtils.toString(response.getEntity(), "iso-8859-1");
+            System.out.println("URL debug : : : : : : : : : : "+params.toString());
+            System.out.println("TAGS sent debug : : : : : : : : : : "+noPrefixTags.toString());
             if (responseString.contains("Pas assez de termes, bye")) {
               return null;
             }
             newTags = parseTags(ref, responseString);
+            System.out.println("response debug : : : : : : : : : : "+newTags);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(HttpRequestService.class
                     .getName()).log(Level.SEVERE, null, ex);

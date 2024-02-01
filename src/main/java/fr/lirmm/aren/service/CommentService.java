@@ -159,6 +159,9 @@ public class CommentService extends AbstractService<Comment> {
      * @param fetchOnly
      */
     public void updateTags(Comment comment, boolean fetchOnly) {
+        System.out.println("*** : updateSimple DEBUG DEBATE -->"+comment.getDebate());
+        System.out.println("*** : updateSimple DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
+        System.out.println("*** : updateSimple DEBUG TAGs -->"+comment.getProposedTags());
         TagSet tags = fetchNewTags(comment);
         getEntityManager().refresh(comment);
         comment.setTags(tags);
