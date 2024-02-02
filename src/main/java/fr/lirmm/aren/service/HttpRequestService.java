@@ -283,12 +283,14 @@ public class HttpRequestService {
     public TagSet sendTag(String ref, TagSet tags, String text) {
         TagSet noPrefixTags = new TagSet();
          
-        /* 240 */     for (TagSet.Tag tag : tags) {
-        /* 241 */       TagSet.Tag modifiedTag = new TagSet.Tag(tag.getValue().replace(ref, ""));
-        /* 242 */       noPrefixTags.add(modifiedTag);
+             for (TagSet.Tag tag : tags) {
+                TagSet.Tag modifiedTag ;
+                modifiedTag = tag.getValue().contains("::") ? new TagSet.Tag(tag.getValue().split("::")[1]) : new TagSet.Tag(tag.getValue());
+                noPrefixTags.add(modifiedTag);
         /*     */     } 
         /* 244 */     TagSet newTags = new TagSet();
         /*     */     
+        
         try {
             CloseableHttpClient httpClient = HttpClients.createSystem();
             HttpPost httppost = new HttpPost(idefixUrl.get());
@@ -312,13 +314,20 @@ public class HttpRequestService {
 
             CloseableHttpResponse response = httpClient.execute(httppost);
             String responseString = EntityUtils.toString(response.getEntity(), "iso-8859-1");
-            System.out.println("URL debug : : : : : : : : : : "+params.toString());
-            System.out.println("TAGS sent debug : : : : : : : : : : "+noPrefixTags.toString());
+            System.out.println("\n\nURL debug >>>>>>>>>>>> "+params.toString());
+            System.out.println("\n\nTAGS sent debug >>>>>>>>>>>> "+noPrefixTags.toString());
             if (responseString.contains("Pas assez de termes, bye")) {
-              return null;
+                System.out.println(">>>>>PAS ASSEZ DE TERMES BYE !<<<<<<<"+newTags);
+                return null;
             }
             newTags = parseTags(ref, responseString);
-            System.out.println("response debug : : : : : : : : : : "+newTags);
+            System.out.print("\n\nRESPONSE debug >>>>>>>>>>>> ");
+            for (TagSet.Tag tag : newTags) {
+                String[] values = tag.getValue().split("::");
+                int part = values.length >1 ? 1:0;
+                    System.out.print(values[part] + "  |  ");
+            }
+            System.out.println("\n\n\n");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(HttpRequestService.class
                     .getName()).log(Level.SEVERE, null, ex);

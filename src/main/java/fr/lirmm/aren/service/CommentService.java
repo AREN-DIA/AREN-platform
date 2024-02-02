@@ -174,6 +174,7 @@ public class CommentService extends AbstractService<Comment> {
      * @param comment
      */
     public void updateTags(Comment comment) {
+        System.out.println("Starting local tags update starting. On comment : \'"+comment.getArgumentation()+"\'' -- debate n° "+comment.getDebate());
         updateTags(comment, false);
     }
 
@@ -184,7 +185,7 @@ public class CommentService extends AbstractService<Comment> {
     public void updateAllTags(BiConsumer<Comment, Float> callback) {
         Set<Comment> comments = this.findAll();
         comments = comments.stream().filter((comment) -> comment.getDebate().isIdefixLink()).collect(Collectors.toSet());
-        System.out.println("Starting tags update on " + comments.size() + " comments");
+        System.out.println("Starting global tags update on " + comments.size() + " comments");
         int cpt = 0;
         Iterator<Comment> it = comments.iterator();
         while (it.hasNext()) {
