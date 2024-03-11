@@ -117,6 +117,7 @@ public class TagSet extends HashSet<TagSet.Tag> {
          * @param serial
          */
         public Tag(String serial) {
+            System.out.println("serial test  --------> : "+serial);
             String[] split = serial.split("\\|");
             if (split.length == 2) {
                 split[1] = split[1].trim();
