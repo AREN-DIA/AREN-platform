@@ -272,11 +272,11 @@ public class Comment extends AbstractOwnedEntity implements Serializable {
     @Type(type = "org.hibernate.type.TextType")
     private String hypostases;
 
-    @Column(name = "tags", length = 1023)
+    @Column(name = "tags", length = 2047)
     @Convert(converter = TagSet.Converter.class)
     private TagSet tags = new TagSet();
 
-    @Column(name = "proposed_tags", length = 1023)
+    @Column(name = "proposed_tags", length = 2047)
     @Convert(converter = TagSet.Converter.class)
     private TagSet proposedTags = new TagSet();
 

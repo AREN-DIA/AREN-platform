@@ -36,7 +36,7 @@
         </template>
 
         <template v-slot:column.3="{ value: debate }">
-            {{ debate.lastCommentDate !== 0 ? $d(debate.lastCommentDate, 'short') : $t('no_post') }}
+            {{ debate.commentsCount !== 0 ? $d(debate.lastCommentDate, 'short') : $t('no_post') }}
         </template>
 
         <template v-slot:column.4="{ value: debate }">

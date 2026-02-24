@@ -257,6 +257,7 @@
         <version>${maven.war.version}</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
+          <outputDirectory>C:\Users\Hani\Documents\PRO\apache-tomcat-8.5.89\webapps</outputDirectory>
         </configuration>
       </plugin>
       <plugin>

@@ -189,6 +189,49 @@ public class HttpRequestService {
 
     /**
      *
+     * @param text
+     * @param comment
+     * @return
+     */
+    public TagSet retrieveTags(String ref, String text, Comment comment) {
+        TagSet tags = new TagSet();
+        try {
+            CloseableHttpClient httpClient = HttpClients.createSystem();
+            HttpPost httppost = new HttpPost(idefixUrl.get());
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setSocketTimeout(1 * 60 * 1000)
+                    .setConnectTimeout(1 * 60 * 1000)
+                    .setConnectionRequestTimeout(1 * 60 * 1000)
+                    .build();
+            httppost.setConfig(requestConfig);
+
+            List< NameValuePair> params = new ArrayList<NameValuePair>(3);
+            params.add(new BasicNameValuePair("extract_term_list", text));
+            params.add(new BasicNameValuePair("extract_submit", "Extraire"));
+            params.add(new BasicNameValuePair("number", "20"));
+            params.add(new BasicNameValuePair("task", "task"));
+            params.add(new BasicNameValuePair("from", "aren"));
+            httppost.setEntity(new UrlEncodedFormEntity(params, "iso-8859-1"));
+
+            CloseableHttpResponse response = httpClient.execute(httppost);
+            String responseString = EntityUtils.toString(response.getEntity(), "iso-8859-1");
+
+            if (responseString.contains("Pas assez de termes, bye")) {
+                return null;
+            }
+            tags = parseTags(ref, responseString);
+
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(HttpRequestService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(HttpRequestService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tags;
+    }
+
+
+    /**
+     *
      * @param tags
      * @param text
      * @return
@@ -231,6 +274,72 @@ public class HttpRequestService {
         return newTags;
     }
 
+/**
+     *
+     * @param tags
+     * @param text
+     * @return
+     */
+    public TagSet sendTag(String ref, TagSet tags, String text) {
+        TagSet noPrefixTags = new TagSet();
+         
+             for (TagSet.Tag tag : tags) {
+                TagSet.Tag modifiedTag ;
+                modifiedTag = tag.getValue().contains("::") ? new TagSet.Tag(tag.getValue().split("::")[1]) : new TagSet.Tag(tag.getValue());
+                noPrefixTags.add(modifiedTag);
+        /*     */     } 
+        /* 244 */     TagSet newTags = new TagSet();
+        /*     */     
+        
+        try {
+            CloseableHttpClient httpClient = HttpClients.createSystem();
+            HttpPost httppost = new HttpPost(idefixUrl.get());
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setSocketTimeout(1 * 60 * 1000)
+                    .setConnectTimeout(1 * 60 * 1000)
+                    .setConnectionRequestTimeout(1 * 60 * 1000)
+                    .build();
+            httppost.setConfig(requestConfig);
+
+            List< NameValuePair> params = new ArrayList<NameValuePair>(5);
+            params.add(new BasicNameValuePair("linkit_add", "Ajouter"));
+            params.add(new BasicNameValuePair("add_items", noPrefixTags.toString()));
+            params.add(new BasicNameValuePair("extract_submit", "1"));
+            params.add(new BasicNameValuePair("extract_term_list", text));
+            params.add(new BasicNameValuePair("extract_termid_list", ""));
+            params.add(new BasicNameValuePair("task", ""));
+            params.add(new BasicNameValuePair("from", "aren"));
+            UrlEncodedFormEntity url = new UrlEncodedFormEntity(params, "iso-8859-1");
+            httppost.setEntity(url);
+
+            CloseableHttpResponse response = httpClient.execute(httppost);
+            String responseString = EntityUtils.toString(response.getEntity(), "iso-8859-1");
+            System.out.println("\n\nURL debug >>>>>>>>>>>> "+params.toString());
+            System.out.println("\n\nTAGS sent debug >>>>>>>>>>>> "+noPrefixTags.toString());
+            if (responseString.contains("Pas assez de termes, bye")) {
+                System.out.println(">>>>>PAS ASSEZ DE TERMES BYE !<<<<<<<"+newTags);
+                return null;
+            }
+            newTags = parseTags(ref, responseString);
+            System.out.print("\n\nRESPONSE debug >>>>>>>>>>>> ");
+            for (TagSet.Tag tag : newTags) {
+                String[] values = tag.getValue().split("::");
+                int part = values.length >1 ? 1:0;
+                    System.out.print(values[part] + "  |  ");
+            }
+            System.out.println("\n\n\n");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(HttpRequestService.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(HttpRequestService.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return newTags;
+    }
+    
+
+
     private TagSet parseTags(String string) throws IOException {
         TagSet tags = new TagSet();
         Document doc = Jsoup.parse(string, "iso-8859-1");
@@ -242,4 +351,16 @@ public class HttpRequestService {
         }
         return tags;
     }
+
+    private TagSet parseTags(String ref, String string) throws IOException {
+        /* 293 */     TagSet tags = new TagSet();
+        /* 294 */     Document doc = Jsoup.parse(string, "iso-8859-1");
+        /* 295 */     if (doc.getElementsByTag("result").size() > 0) {
+        /* 296 */       String tagString = doc.getElementsByTag("result").get(0).text();
+        /* 297 */       if (tagString.length() > 0) {
+        /* 298 */         tags = new TagSet(ref, tagString);
+        /*     */       }
+        /*     */     } 
+        /* 301 */     return tags;
+        /*     */   }
 }

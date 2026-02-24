@@ -2,7 +2,14 @@
     <modal-layout>
 
         <template v-slot:title>{{ $t('user_creation') }}</template>
-
+        <toggle-action-button
+                v-if="$root.user.authority !== 'GUEST'"
+                v-bind:active="emailToggle"
+                v-on:toggle="toggleEmail"
+                :off-label="$t(`hide_email`)"
+                :on-label="$t(`show_email`)"
+                >
+        </toggle-action-button>
         <div v-if="!loading" class="row">
             <text-input type="text" class="col s6"
                         v-model="user.username"
@@ -12,14 +19,16 @@
                         v-bind:validate="!exists['username']"
                         @input="testUserExistance('username')">
             </text-input>
-            <text-input type="text" class="col s6"
+            <text-input 
+                        type="text" class="col s6"
                         v-model="user.email"
                         v-bind:label="$t('email')"
-                        v-bind:validate="validEmail && !exists['email']"
+                        v-bind:validate="($root.user.authority != 'GUEST' && !emailToggle) ? validEmail : (validEmail && !exists['email'])"
                         v-bind:error-helper="!validEmail ? $t('helper.not_an_email') : $t('helper.email_exists')"
+                        v-bind:required="emailToggle"
+                        :disabled="$root.user.authority != 'GUEST' && !emailToggle"
                         @input="testUserExistance('email')">
             </text-input>
-
             <text-input type="text" class="col s6"
                         v-model="user.firstName"
                         v-bind:label="$t('first_name')">
@@ -28,7 +37,7 @@
                         v-model="user.lastName"
                         v-bind:label="$t('last_name')">
             </text-input>
-
+            
             <text-input type="password" class="col s6"
                         v-model="user.password"
                         v-bind:label="$t('password')"
@@ -40,6 +49,7 @@
                         v-bind:validate="samePasswords"
                         v-bind:error-helper="$t('helper.different_passwords')">
             </text-input>
+            
 
             <toggle-action-button v-if="$root.user.authority == 'GUEST'" v-model="modoRequest" :off-label="$t(`modo_request`)">
             </toggle-action-button>
@@ -59,7 +69,7 @@
 
         <template v-slot:footer>
             <button @click="close()" v-bind:disabled="loading" class="waves-effect waves-green btn-flat">{{ $t('cancel') }}</button>
-            <button @click="signup();" v-bind:disabled="loading || !samePasswords || exists.username || exists.email || !validEmail" class="waves-effect waves-green btn-flat">{{ $t('validate') }}</button>
+            <button @click="signup();" v-bind:disabled="loading || !samePasswords || exists.username || (emailToggle || $root.user.authority == 'GUEST') && (exists.email || !validEmail) " class="waves-effect waves-green btn-flat">{{ $t('validate') }}</button>
         </template>
 
     </modal-layout>
@@ -75,6 +85,7 @@
                 exists: {username: false, email: false},
                 checkExistsTimeout: -1,
                 modoRequest: false,
+                emailToggle: false,
                 loading: false
             };
         },
@@ -83,10 +94,19 @@
                 return this.user.password === this.passwordCheck;
             },
             validEmail() {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email);
+                return (this.$root.user.authority != 'GUEST' && !this.emailToggle) ? true : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email);
             }
         },
         methods: {
+            toggleEmail() {
+                this.emailToggle = !this.emailToggle;
+                if (this.$root.user.authority != 'GUEST' && !this.emailToggle) {
+                    this.user.email = 'aren@aren.fr';
+                }
+                if (this.$root.user.authority != 'GUEST' && this.emailToggle) {
+                    this.user.email = '';
+                }
+            },
             afterOpen( ) {
                 this.loading = false;
                 this.user = false;
@@ -94,6 +114,7 @@
                     this.user = new User( );
                     this.user.authority = Authority.USER;
                     this.passwordCheck = "";
+                    this.user.email = 'aren@aren.fr';
                 });
             },
             testUserExistance(field) {

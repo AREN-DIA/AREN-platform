@@ -31,6 +31,16 @@ public class TagSet extends HashSet<TagSet.Tag> {
         }
     }
 
+    public TagSet(String ref, String serial) {
+        /* 51 */     this();
+        /* 52 */     for (String tagSerial : serial.split("\\*")) {
+        /* 53 */       if (tagSerial.length() > 0) {
+                            //System.out.println("DEBUG RETOUR IDEFIX --------> : "+tagSerial);
+        /* 54 */         add(new Tag(ref + tagSerial));
+        /*    */       }
+        /*    */     } 
+        /*    */   }
+
     /**
      *
      * @param tag
@@ -107,12 +117,14 @@ public class TagSet extends HashSet<TagSet.Tag> {
          * @param serial
          */
         public Tag(String serial) {
+            System.out.println("serial test  --------> : "+serial);
             String[] split = serial.split("\\|");
             if (split.length == 2) {
                 split[1] = split[1].trim();
                 //System.out.println("DEBUG RETOUR IDEFIX --------> : "+serial);
                 //System.out.println("DEBUG RETOUR IDEFIX POWER --------> : "+split[1]);
                 this.power = Float.parseFloat(split[1]);
+                //System.out.println("DEBUG RETOUR IDEFIX POWER --------> : "+split[1]);
             }
             split[0] = split[0].trim();
             if (split[0].startsWith("-")) {

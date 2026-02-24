@@ -1,5 +1,6 @@
 package fr.lirmm.aren.service;
 
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -116,16 +117,37 @@ public class CommentService extends AbstractService<Comment> {
     }
 
     private TagSet fetchNewTags(Comment comment, boolean fetchOnly) {
-        TagSet tags = new TagSet();
-        if (comment.getReformulation() != null && !comment.getReformulation().isEmpty()) {
-            if (!fetchOnly && !comment.getProposedTags().isEmpty()) {
-                tags = httpRequestService.sendTag(comment.getProposedTags(), comment.getReformulation());
-            } else {
-                tags = httpRequestService.retrieveTags(comment.getReformulation(), comment);
-            }
-        }
-        return tags;
-    }
+/* 119 */     TagSet selectionTags = new TagSet();
+/* 120 */     TagSet tags = new TagSet();
+/* 121 */     TagSet argumentationTags = new TagSet();
+/* 122 */     String reformulation = comment.getReformulation();
+/* 123 */     String argumentation = comment.getArgumentation();
+/* 124 */     String selection = comment.getSelection();
+/* 125 */     if (!fetchOnly && !comment.getProposedTags().isEmpty()) {
+/* 126 */       if (reformulation != null && !reformulation.isEmpty()) {
+/* 127 */         tags = this.httpRequestService.sendTag("refo::", comment.getProposedTags(), reformulation);
+/*     */       }
+/* 129 */       selectionTags = this.httpRequestService.sendTag("sel::", comment.getProposedTags(), selection);
+/* 130 */       argumentationTags = this.httpRequestService.sendTag("arg::", comment.getProposedTags(), argumentation);
+/*     */     }
+/*     */     else {
+/*     */       
+/* 134 */       tags = this.httpRequestService.retrieveTags("refo::", reformulation, comment);
+/* 135 */       selectionTags = this.httpRequestService.retrieveTags("sel::", selection, comment);
+/* 136 */       argumentationTags = this.httpRequestService.retrieveTags("arg::", argumentation, comment);
+/*     */     } 
+/* 138 */     TagSet extendedTags = new TagSet();
+/* 139 */     if (selectionTags != null) {
+/* 140 */       extendedTags.addAll(selectionTags);
+/*     */     }
+/* 142 */     if (tags != null) {
+/* 143 */       extendedTags.addAll(tags);
+/*     */     }
+/* 145 */     if (argumentationTags != null) {
+/* 146 */       extendedTags.addAll(argumentationTags);
+/*     */     }
+/* 148 */     return extendedTags;
+/*     */   }
 
     private TagSet fetchNewTags(Comment comment) {
         return fetchNewTags(comment, false);
@@ -137,6 +159,7 @@ public class CommentService extends AbstractService<Comment> {
      * @param fetchOnly
      */
     public void updateTags(Comment comment, boolean fetchOnly) {
+        System.out.println("Starting tags update on " + comment.getId());
         TagSet tags = fetchNewTags(comment);
         getEntityManager().refresh(comment);
         comment.setTags(tags);
@@ -164,9 +187,9 @@ public class CommentService extends AbstractService<Comment> {
         Iterator<Comment> it = comments.iterator();
         while (it.hasNext()) {
             Comment comment = it.next();
-            System.out.println("*** : DEBUG DEBATE -->"+comment.getDebate());
-            System.out.println("*** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
-            System.out.println("*** : DEBUG TAGs -->"+comment.getProposedTags());
+            System.out.println("**ALL** : DEBUG DEBATE -->"+comment.getDebate());
+            System.out.println("**ALL** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
+            System.out.println("**ALL** : DEBUG TAGs -->"+comment.getProposedTags());
             System.out.println();
             this.updateTags(comment, true);
             System.out.print("+");
