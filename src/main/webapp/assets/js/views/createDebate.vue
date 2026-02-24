@@ -176,7 +176,7 @@
                 institution: new Institution( ),
                 search: "",
                 step: 0,
-                displayAdvancedOptions: false
+                displayAdvancedOptions: true
             };
         },
         created( ) {
@@ -193,8 +193,9 @@
             },
             reinit() {
                 this.debate = new Debate( );
-                this.debate.reformulationCheck = true;
-                this.debate.reformulationMandatory = true;
+                this.debate.reformulationCheck = false;
+                console.log("reformulationCheck initialized to:", this.debate.reformulationCheck);
+                this.debate.reformulationMandatory = false;
                 this.debate.withHypostases = false;
                 this.debate.idefixLink = false;
                 if (this.$refs.mainTabs)

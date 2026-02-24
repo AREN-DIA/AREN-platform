@@ -21,7 +21,7 @@
                 <div v-html="comment.argumentation" ref="argumentation"></div>
             </div>
         </div> -->
-        <details :class="{ 'selected-collapsible': isCollapsibleSelected('sel'), 'open': collapsibles.sel.isOpen }" @click="toggleCollapsible('sel')">
+        <details :class="{ 'selected-collapsible': collapsibles.sel.isOpen, 'open': collapsibles.sel.isOpen }" @click="toggleCollapsible('sel')">
         <summary><i class="material-icons small-icon">text_snippet</i> Selection </summary>
         <div class="selection">
             <div class="selection-tag-wrapper">
@@ -42,7 +42,7 @@
             <i class="close material-icons" @click.stop="comment.proposedTags.remove(tag)">close</i>
         </div>
         </details>
-        <text-input v-if="isCollapsibleSelected('sel')"
+        <text-input v-if="collapsibles.sel.isOpen"
             v-bind:helper="$t('helper.tag_input_explanations')"
             v-bind:label="$t('proposed_tags')"
             v-model="tagInput"
@@ -50,7 +50,7 @@
         </text-input>
         
         <hr class="custom-hr">
-        <details :class="{ 'selected-collapsible': isCollapsibleSelected('refo'), 'open': collapsibles.refo.isOpen }" @click="toggleCollapsible('refo')">
+        <details :class="{ 'selected-collapsible': collapsibles.refo.isOpen, 'open': collapsibles.refo.isOpen }" @click="toggleCollapsible('refo')">
         <summary><i class="material-icons small-icon">hearing</i> {{ $t('comment.reformulation') }}</summary>
         <div class="selection">
             <div class="selection-tag-wrapper">
@@ -71,7 +71,7 @@
             <i class="close material-icons" @click.stop="comment.proposedTags.remove(tag)">close</i>
         </div>
         </details>
-        <text-input v-if="isCollapsibleSelected('refo')"
+        <text-input v-if="collapsibles.refo.isOpen"
             v-bind:helper="$t('helper.tag_input_explanations')"
             v-bind:label="$t('proposed_tags')"
             v-model="tagInput"
@@ -79,7 +79,7 @@
         </text-input>
         
         <hr class="custom-hr">
-        <details :class="{ 'selected-collapsible': isCollapsibleSelected('arg'), 'open': collapsibles.arg.isOpen }" @click="toggleCollapsible('arg')">
+        <details :class="{ 'selected-collapsible': collapsibles.arg.isOpen, 'open': collapsibles.arg.isOpen }" @click="toggleCollapsible('arg')">
         <summary><i class="material-icons small-icon">chat_bubble_outline</i> {{ $t('comment.argumentation') }}</summary>
         <div class="selection">
             <div class="selection-tag-wrapper">
@@ -103,7 +103,7 @@
             <i class="close material-icons" @click.stop="comment.proposedTags.remove(tag)">close</i>
         </div> 
         </details> 
-        <text-input v-if="isCollapsibleSelected('arg')"
+        <text-input v-if="collapsibles.arg.isOpen"
             v-bind:helper="$t('helper.tag_input_explanations')"
             v-bind:label="$t('proposed_tags')"
             v-model="tagInput"

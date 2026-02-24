@@ -101,7 +101,7 @@
             toggleEmail() {
                 this.emailToggle = !this.emailToggle;
                 if (this.$root.user.authority != 'GUEST' && !this.emailToggle) {
-                    this.user.email = 'aren@aren.fr';
+                    this.user.email = 'aren@aren.fr';this.user.active = true;
                 }
                 if (this.$root.user.authority != 'GUEST' && this.emailToggle) {
                     this.user.email = '';
@@ -115,6 +115,7 @@
                     this.user.authority = Authority.USER;
                     this.passwordCheck = "";
                     this.user.email = 'aren@aren.fr';
+                    
                 });
             },
             testUserExistance(field) {
@@ -137,7 +138,7 @@
                     },
                     onSuccess: () => {
                         this.close();
-                        if (!this.$root.user.is('MODO')) {
+                        if (!this.$root.user.is('MODO') && !this.emailToggle) {
                           this.$confirm({
                               title: this.$t('user_created'),
                               message: this.$t('helper.user_created_email'),

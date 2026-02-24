@@ -144,7 +144,7 @@
             deleteDebate(debate) {
                 this.$confirm({
                     title: this.$t("helper.delete_debate", {debateName: debate.document.name}),
-                    message: this.$t('helper.delete_debate_warning') + '<br><br>' + this.$t('helper.not_cancelable') + '<br>' + this.$t('helper.do_continue'),
+                    message: this.$t('helper.delete_debate') + '<br><br>' + this.$t('helper.not_cancelable') + '<br>' + this.$t('helper.do_continue'),
                     callback: (returnValue) => {
                         if (returnValue) {
                             ArenService.Debates.remove({

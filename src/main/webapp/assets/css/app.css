@@ -8052,13 +8052,13 @@ input[type=range]::-ms-thumb {
   max-height: 0;
   transition: max-height 0.3s;
 }
-.grid .gbody > .gr:focus-within .gd {
+.grid .gbody > .gr:hover .gd {
   background-color: #5cd6d6 !important;
 }
-.grid .gbody > .gr:focus-within > .gr.extendable > .gd.action {
+.grid .gbody > .gr:hover > .gr.extendable > .gd.action {
   padding-bottom: 15px;
 }
-.grid .gbody > .gr:focus-within > .gr.extendable > .gd.action .btn, .grid .gbody > .gr:focus-within > .gr.extendable > .gd.action .btn-large, .grid .gbody > .gr:focus-within > .gr.extendable > .gd.action .btn-small {
+.grid .gbody > .gr:hover > .gr.extendable > .gd.action .btn, .grid .gbody > .gr:hover > .gr.extendable > .gd.action .btn-large, .grid .gbody > .gr:hover > .gr.extendable > .gd.action .btn-small {
   max-height: 36px;
 }
 

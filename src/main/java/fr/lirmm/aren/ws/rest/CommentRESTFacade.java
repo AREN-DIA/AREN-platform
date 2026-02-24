@@ -1,5 +1,9 @@
 package fr.lirmm.aren.ws.rest;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -12,12 +16,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.Sse;
 import javax.ws.rs.sse.SseEventSink;
-
 import fr.lirmm.aren.model.Comment;
 import fr.lirmm.aren.model.TagSet;
 import fr.lirmm.aren.service.BroadcasterService;
 import fr.lirmm.aren.service.CommentService;
 import fr.lirmm.aren.service.HttpRequestService;
+
+
 
 /**
  * JAX-RS resource class for Comments managment
@@ -36,7 +41,8 @@ public class CommentRESTFacade extends AbstractRESTFacade<Comment> {
 
     @Inject
     private HttpRequestService httpRequestService;
-
+    
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
     /**
      *
      * @return
@@ -129,7 +135,7 @@ public class CommentRESTFacade extends AbstractRESTFacade<Comment> {
         asyncUpdateTag(comment.getId());
     }
 
-    private void asyncUpdateTag(Long id) {
+    private void asyncUpdateTagBAK(Long id) {
         new Thread() {
           public void run() {
             Comment comment = commentService.find(id);
@@ -139,5 +145,13 @@ public class CommentRESTFacade extends AbstractRESTFacade<Comment> {
             broadcasterService.broadcast(comment);
           }
       }.start();
+    }
+    private void asyncUpdateTag(Long id) {
+        executorService.submit(() -> {
+            Comment comment = commentService.find(id);
+            commentService.updateTags(comment);
+            commentService.edit(comment);
+            broadcasterService.broadcast(comment);
+        });
     }
 }

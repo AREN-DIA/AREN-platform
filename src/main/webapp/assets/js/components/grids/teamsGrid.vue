@@ -33,7 +33,10 @@
         props: ['teams', 'search'],
         methods: {
             filter(team) {
-                return team.name.toLowerCase( ).includes(this.search.toLowerCase( ));
+                const name = (team.name || '').toLowerCase();
+                const search = (this.search || '').toLowerCase();
+                return name.includes(search);
+                //return team.name.toLowerCase( ).includes(this.search.toLowerCase( ));
             },
             sort(a, b) {
                 return (a.name > b.name) ? 1 : -1;

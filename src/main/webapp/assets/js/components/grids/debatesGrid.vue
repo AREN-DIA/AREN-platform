@@ -7,7 +7,8 @@
         v-bind:items="categories"
         v-bind:grouped-items="( group ) => group.debates()"
         v-bind:sort="( a, b ) => a.created - b.created"
-        @selection-change="$emit('selection-change', $event)">
+        @mouseover.native="handleMouseOver"
+        @mouseout.native="handleMouseOut">
 
         <template v-slot:row.group="{ value: category }">
             <div class="card center-align">
@@ -73,6 +74,38 @@
 <script>
     module.exports = {
         mixins: [VueGrid],
-        props: ['categories', 'extendable']
+        props: ['categories', 'extendable'],
+        data() {
+            return {
+                hoveredDebate: null
+            }
+        },
+        methods: {
+            handleMouseOver(event) {
+                const debateElement = event.target.closest('.grid-row');
+                if (debateElement) {
+                    this.hoveredDebate = debateElement.dataset.debateId;
+                    this.$emit('selection-change', this.hoveredDebate);
+                }
+            },
+            handleMouseOut() {
+                this.hoveredDebate = null;
+                this.$emit('selection-change', null);
+            }
+        }
     };
 </script>
+
+<style scoped>
+.grid-row {
+    position: relative;
+}
+
+.actions {
+    display: none;
+}
+
+.grid-row:hover .actions {
+    display: block;
+}
+</style>

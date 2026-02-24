@@ -1255,6 +1255,18 @@ nav {
                     }
                 }
             }
+            /* Ajout pour le hover */
+            &:hover {
+                .gh {
+                    background-color: $selection-color !important;
+                }
+                .card-action {
+                    padding-bottom: 15px;
+                    .btn {
+                        max-height: 36px;
+                    }
+                }
+            }
         }
     }
 }
@@ -1616,4 +1628,22 @@ nav {
             }
         }
     }
+}
+
+// Ajout : étendre la ligne extendable au survol
+.grid .gbody > .gr.extendable:hover > .gd.action {
+  // Applique les mêmes styles que lors du focus
+  // (adapte selon ce que tu veux étendre, exemple :)
+  max-width: 200px; // ou la largeur souhaitée
+  opacity: 1;
+  pointer-events: all;
+  // Ajoute ici les propriétés nécessaires pour "étendre"
+}
+.grid .gbody > .gr.extendable:hover > .gd.action .btn,
+.grid .gbody > .gr.extendable:hover > .gd.action .btn-large,
+.grid .gbody > .gr.extendable:hover > .gd.action .btn-small {
+  max-width: 200px; // ou la largeur souhaitée
+  opacity: 1;
+  pointer-events: all;
+  // Idem, adapte selon le besoin
 }

@@ -70,6 +70,7 @@
         },
         created( ) {
             this.fetchData( );
+            //this.sortCategories();
         },
         methods: {
             sortByDate(order) {
@@ -93,9 +94,8 @@
             },
             sortCategories() {
                 this.categories.sort((a, b) => {
-                const aValue = this.sortBy === 'lastCommentDate' ? a.lastCommentDate : a.debatesCount;
-                const bValue = this.sortBy === 'lastCommentDate' ? b.lastCommentDate : b.debatesCount;
-
+                let aValue = this.sortBy === 'lastCommentDate' ? a.lastCommentDate : a.debatesCount;
+                let bValue = this.sortBy === 'lastCommentDate' ? b.lastCommentDate : b.debatesCount;
                 if (this.sortOrder === 'asc') {
                     return aValue - bValue;
                 } else {

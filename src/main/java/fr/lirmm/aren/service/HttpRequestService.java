@@ -157,9 +157,9 @@ public class HttpRequestService {
             CloseableHttpClient httpClient = HttpClients.createSystem();
             HttpPost httppost = new HttpPost(idefixUrl.get());
             RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(1 * 60 * 1000)
-                    .setConnectTimeout(1 * 60 * 1000)
-                    .setConnectionRequestTimeout(1 * 60 * 1000)
+                    .setSocketTimeout(2 * 60 * 1000)
+                    .setConnectTimeout(2 * 60 * 1000)
+                    .setConnectionRequestTimeout(2 * 60 * 1000)
                     .build();
             httppost.setConfig(requestConfig);
 
@@ -173,7 +173,7 @@ public class HttpRequestService {
 
             CloseableHttpResponse response = httpClient.execute(httppost);
             String responseString = EntityUtils.toString(response.getEntity(), "iso-8859-1");
-
+            
             if (responseString.contains("Pas assez de termes, bye")) {
                 return null;
             }
@@ -199,9 +199,9 @@ public class HttpRequestService {
             CloseableHttpClient httpClient = HttpClients.createSystem();
             HttpPost httppost = new HttpPost(idefixUrl.get());
             RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(1 * 60 * 1000)
-                    .setConnectTimeout(1 * 60 * 1000)
-                    .setConnectionRequestTimeout(1 * 60 * 1000)
+                    .setSocketTimeout(2 * 60 * 1000)
+                    .setConnectTimeout(2 * 60 * 1000)
+                    .setConnectionRequestTimeout(2 * 60 * 1000)
                     .build();
             httppost.setConfig(requestConfig);
 
@@ -215,7 +215,7 @@ public class HttpRequestService {
 
             CloseableHttpResponse response = httpClient.execute(httppost);
             String responseString = EntityUtils.toString(response.getEntity(), "iso-8859-1");
-
+            System.out.println(responseString);
             if (responseString.contains("Pas assez de termes, bye")) {
                 return null;
             }
@@ -242,9 +242,9 @@ public class HttpRequestService {
             CloseableHttpClient httpClient = HttpClients.createSystem();
             HttpPost httppost = new HttpPost(idefixUrl.get());
             RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(1 * 60 * 1000)
-                    .setConnectTimeout(1 * 60 * 1000)
-                    .setConnectionRequestTimeout(1 * 60 * 1000)
+                    .setSocketTimeout(2 * 60 * 1000)
+                    .setConnectTimeout(2 * 60 * 1000)
+                    .setConnectionRequestTimeout(2 * 60 * 1000)
                     .build();
             httppost.setConfig(requestConfig);
 
@@ -293,9 +293,9 @@ public class HttpRequestService {
             CloseableHttpClient httpClient = HttpClients.createSystem();
             HttpPost httppost = new HttpPost(idefixUrl.get());
             RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(1 * 60 * 1000)
-                    .setConnectTimeout(1 * 60 * 1000)
-                    .setConnectionRequestTimeout(1 * 60 * 1000)
+                    .setSocketTimeout(2 * 60 * 1000)
+                    .setConnectTimeout(2 * 60 * 1000)
+                    .setConnectionRequestTimeout(2 * 60 * 1000)
                     .build();
             httppost.setConfig(requestConfig);
 

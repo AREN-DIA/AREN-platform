@@ -159,6 +159,7 @@ public class CommentService extends AbstractService<Comment> {
      * @param fetchOnly
      */
     public void updateTags(Comment comment, boolean fetchOnly) {
+        System.out.println("Starting tags update on " + comment.getId());
         TagSet tags = fetchNewTags(comment);
         getEntityManager().refresh(comment);
         comment.setTags(tags);
@@ -186,9 +187,9 @@ public class CommentService extends AbstractService<Comment> {
         Iterator<Comment> it = comments.iterator();
         while (it.hasNext()) {
             Comment comment = it.next();
-            System.out.println("*** : DEBUG DEBATE -->"+comment.getDebate());
-            System.out.println("*** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
-            System.out.println("*** : DEBUG TAGs -->"+comment.getProposedTags());
+            System.out.println("**ALL** : DEBUG DEBATE -->"+comment.getDebate());
+            System.out.println("**ALL** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
+            System.out.println("**ALL** : DEBUG TAGs -->"+comment.getProposedTags());
             System.out.println();
             this.updateTags(comment, true);
             System.out.print("+");
