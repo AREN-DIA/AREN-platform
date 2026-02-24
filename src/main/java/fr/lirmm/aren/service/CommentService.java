@@ -159,9 +159,7 @@ public class CommentService extends AbstractService<Comment> {
      * @param fetchOnly
      */
     public void updateTags(Comment comment, boolean fetchOnly) {
-        System.out.println("*** : updateSimple DEBUG DEBATE -->"+comment.getDebate());
-        System.out.println("*** : updateSimple DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
-        System.out.println("*** : updateSimple DEBUG TAGs -->"+comment.getProposedTags());
+        System.out.println("Starting tags update on " + comment.getId());
         TagSet tags = fetchNewTags(comment);
         getEntityManager().refresh(comment);
         comment.setTags(tags);
@@ -174,7 +172,6 @@ public class CommentService extends AbstractService<Comment> {
      * @param comment
      */
     public void updateTags(Comment comment) {
-        System.out.println("Starting local tags update starting. On comment : \'"+comment.getArgumentation()+"\'' -- debate n° "+comment.getDebate());
         updateTags(comment, false);
     }
 
@@ -185,14 +182,14 @@ public class CommentService extends AbstractService<Comment> {
     public void updateAllTags(BiConsumer<Comment, Float> callback) {
         Set<Comment> comments = this.findAll();
         comments = comments.stream().filter((comment) -> comment.getDebate().isIdefixLink()).collect(Collectors.toSet());
-        System.out.println("Starting global tags update on " + comments.size() + " comments");
+        System.out.println("Starting tags update on " + comments.size() + " comments");
         int cpt = 0;
         Iterator<Comment> it = comments.iterator();
         while (it.hasNext()) {
             Comment comment = it.next();
-            System.out.println("*** : DEBUG DEBATE -->"+comment.getDebate());
-            System.out.println("*** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
-            System.out.println("*** : DEBUG TAGs -->"+comment.getProposedTags());
+            System.out.println("**ALL** : DEBUG DEBATE -->"+comment.getDebate());
+            System.out.println("**ALL** : DEBUG SENT TEXT (REFO) -->"+comment.getReformulation());
+            System.out.println("**ALL** : DEBUG TAGs -->"+comment.getProposedTags());
             System.out.println();
             this.updateTags(comment, true);
             System.out.print("+");
